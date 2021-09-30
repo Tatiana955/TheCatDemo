@@ -19,6 +19,8 @@ class ViewModel @Inject constructor(private val repository: Repository): ViewMod
         MutableLiveData<MutableList<DataSource>>()
     }
 
+    var clickDataSource: DataSource? = null
+
     fun getData() {
         CoroutineScope(Dispatchers.IO).launch {
             val dataRep = repository.getData()

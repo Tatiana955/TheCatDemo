@@ -49,9 +49,11 @@ data class Weight(
 )
 
 val fakeDataSource = DataSource(
-        1, 1, "", "", 1, "", "", "",
+        1, 1, "", "", 1, "", "",
+        "Native to the Greek islands known as the Cyclades in the Aegean Sea, these are natural cats, meaning they developed without humans getting involved in their breeding.",
         1, 1, "", image = Image(100, "o1o789", "☕",
         100), 1, 1, 1, "", "Abyssinian", 1, "Egypt", 1, "",
-        1, 1, 1, 1, 1, 1, "", "",
-        "", 1, weight = Weight("", ""), ""
+        1, 1, 1, 1, 1, 1,
+        "Affectionate, Social, Intelligent, Playful, Active", "",
+        "", 1, weight = Weight("", ""), "https://en.wikipedia.org/wiki/Abyssinian_(cat)"
 )

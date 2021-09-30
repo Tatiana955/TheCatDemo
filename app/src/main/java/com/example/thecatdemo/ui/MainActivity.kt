@@ -7,7 +7,6 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.lifecycle.ViewModelProvider
 import coil.annotation.ExperimentalCoilApi
-import com.example.thecatdemo.ui.screens.MainScreen
 import com.example.thecatdemo.ui.theme.TheCatDemoTheme
 import com.example.thecatdemo.viewmodel.ViewModel
 import com.example.thecatdemo.viewmodel.ViewModelFactory
@@ -32,7 +31,7 @@ class MainActivity : ComponentActivity() {
             TheCatDemoTheme {
                 // A surface container using the 'background' color from the theme
                 Surface(color = MaterialTheme.colors.background) {
-                    MainScreen(viewModel)
+                    AppScreen(viewModel = viewModel)
                 }
             }
         }

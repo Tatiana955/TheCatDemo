@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">TheCatDemo</string>
+
+    <string name="origin">Origin</string>
+    <string name="description">Description</string>
+    <string name="temperament">Temperament</string>
+    <string name="wikipedia_url">See wikipedia</string>
 </resources>

@@ -1,6 +1,7 @@
 package com.example.thecatdemo.ui.screens
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -20,42 +21,36 @@ import coil.annotation.ExperimentalCoilApi
 import coil.compose.rememberImagePainter
 import com.example.thecatdemo.data.source.DataSource
 import com.example.thecatdemo.data.source.fakeDataSource
-import com.example.thecatdemo.ui.screens.components.MyTopAppBar
 import com.example.thecatdemo.ui.theme.TheCatDemoTheme
 import com.example.thecatdemo.viewmodel.ViewModel
 
 @ExperimentalCoilApi
 @Composable
-fun MainScreen(viewModel: ViewModel) {
+fun MainScreen(viewModel: ViewModel,
+               onClickDetails: (DataSource) -> Unit = {}) {
     val data by viewModel.dataSource.observeAsState(mutableListOf())
 
-    Column() {
-
-        TopAppBar() {
-            MyTopAppBar(
-                title = {
-                    Text(text = "MainScreen") }
-            )
-        }
-
-        LazyColumn(
-            contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp)
-        ) {
-            this.items(items = data, itemContent = { item ->
-                ListItem(dataSource = item)
-            })
-        }
+    LazyColumn(
+        contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp)
+    ) {
+        this.items(items = data, itemContent = { item ->
+            ListItem(dataSource = item, onClickDetails)
+        })
     }
-
 }
 
 @ExperimentalCoilApi
 @Composable
-fun ListItem(dataSource: DataSource) {
+private fun ListItem(dataSource: DataSource,
+             onClickDetails: (DataSource) -> Unit = {}) {
+
     Card(
         modifier = Modifier
             .padding(horizontal = 8.dp, vertical = 8.dp)
-            .fillMaxWidth(),
+            .fillMaxWidth()
+            .clickable {
+                onClickDetails(dataSource)
+            },
         elevation = 2.dp,
         shape = RoundedCornerShape(corner = CornerSize(16.dp))
     ) {
@@ -77,7 +72,7 @@ fun ListItem(dataSource: DataSource) {
 
 @ExperimentalCoilApi
 @Composable
-fun DataImage(dataSource: DataSource) {
+private fun DataImage(dataSource: DataSource) {
     Image(
         rememberImagePainter(data = dataSource.image.url),
         contentDescription = null,
@@ -92,10 +87,10 @@ fun DataImage(dataSource: DataSource) {
 @ExperimentalCoilApi
 @Composable
 @Preview
-fun ListItemPreview() {
+private fun ListItemPreview() {
     TheCatDemoTheme(darkTheme = false) {
-        Surface {
-            ListItem(dataSource = fakeDataSource)
+        Scaffold {
+            ListItem(dataSource = fakeDataSource, onClickDetails = {})
         }
     }
 }
@@ -103,10 +98,10 @@ fun ListItemPreview() {
 @ExperimentalCoilApi
 @Preview
 @Composable
-fun ListItemPreviewDark() {
+private fun ListItemPreviewDark() {
     TheCatDemoTheme(darkTheme = true) {
-        Surface {
-            ListItem(dataSource = fakeDataSource)
+        Scaffold {
+            ListItem(dataSource = fakeDataSource, onClickDetails = {})
         }
     }
 }
