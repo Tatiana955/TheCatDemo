@@ -13,6 +13,7 @@ import androidx.navigation.compose.rememberNavController
 import coil.annotation.ExperimentalCoilApi
 import com.example.thecatdemo.ui.screens.DetailsScreen
 import com.example.thecatdemo.ui.screens.MainScreen
+import com.example.thecatdemo.ui.screens.WebScreen
 import com.example.thecatdemo.ui.screens.components.MyTopAppBar
 import com.example.thecatdemo.viewmodel.ViewModel
 
@@ -56,6 +57,12 @@ fun AppNavHost(navController: NavHostController,
             viewModel.clickDataSource = it
         })
         }
-        composable("details") { DetailsScreen(viewModel) }
+
+        composable("details") { DetailsScreen(viewModel, onClickItem = {
+            navController.navigate("web")
+        })
+        }
+
+        composable("web") { WebScreen(viewModel) }
     }
 }

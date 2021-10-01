@@ -1,6 +1,7 @@
 package com.example.thecatdemo.ui.screens
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -24,16 +25,16 @@ import com.example.thecatdemo.viewmodel.ViewModel
 
 @ExperimentalCoilApi
 @Composable
-fun DetailsScreen(viewModel: ViewModel) {
+fun DetailsScreen(viewModel: ViewModel, onClickItem: (String) -> Unit = {}) {
     val item: DataSource? = viewModel.clickDataSource
     if (item != null) {
-        DataDetail(item)
+        DataDetail(item, onClickItem)
     }
 }
 
 @ExperimentalCoilApi
 @Composable
-private fun DataDetail(dataSource: DataSource) {
+private fun DataDetail(dataSource: DataSource, onClickItem: (String) -> Unit = {}) {
     val scrollState = rememberScrollState()
     Column(
         modifier = Modifier
@@ -43,7 +44,7 @@ private fun DataDetail(dataSource: DataSource) {
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         DataImageDetails(dataSource)
-        ProfileContent(dataSource)
+        ProfileContent(dataSource, onClickItem)
     }
 }
 
@@ -61,13 +62,13 @@ private fun DataImageDetails(dataSource: DataSource) {
 }
 
 @Composable
-private fun ProfileContent(dataSource: DataSource) {
+private fun ProfileContent(dataSource: DataSource, onClickItem: (String) -> Unit = {}) {
     Column {
         Name(dataSource)
         ProfileProperty(stringResource(R.string.origin), dataSource.origin)
         ProfileProperty(stringResource(R.string.description), dataSource.description)
         ProfileProperty(stringResource(R.string.temperament), dataSource.temperament)
-        ProfileProperty(stringResource(R.string.wikipedia_url), dataSource.wikipedia_url)
+        ProfileProperty(stringResource(R.string.wikipedia_url), dataSource.wikipedia_url, onClickItem)
     }
 }
 
@@ -84,7 +85,8 @@ private fun Name(dataSource: DataSource) {
 }
 
 @Composable
-private fun ProfileProperty(label: String, value: String) {
+private fun ProfileProperty(label: String, value: String,
+                            onClickItem: (String) -> Unit = {}) {
     Column(modifier = Modifier
         .padding(start = 16.dp, end = 16.dp, bottom = 16.dp)) {
         Divider(modifier = Modifier.padding(bottom = 4.dp))
@@ -96,7 +98,11 @@ private fun ProfileProperty(label: String, value: String) {
         Text(
             text = value,
             style = MaterialTheme.typography.body1,
-            overflow = TextOverflow.Visible
+            overflow = TextOverflow.Visible,
+            modifier = Modifier
+                .clickable {
+                    onClickItem(value)
+                }
         )
     }
 }
