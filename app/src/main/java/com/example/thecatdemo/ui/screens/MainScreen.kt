@@ -15,10 +15,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.annotation.ExperimentalCoilApi
 import coil.compose.rememberImagePainter
+import com.example.thecatdemo.R
 import com.example.thecatdemo.data.source.DataSource
 import com.example.thecatdemo.data.source.fakeDataSource
 import com.example.thecatdemo.ui.theme.TheCatDemoTheme
@@ -27,23 +30,25 @@ import com.example.thecatdemo.viewmodel.ViewModel
 @ExperimentalCoilApi
 @Composable
 fun MainScreen(viewModel: ViewModel,
-               onClickDetails: (DataSource) -> Unit = {}) {
+               onClickDetails: (DataSource) -> Unit = {}
+) {
     val data by viewModel.dataSource.observeAsState(mutableListOf())
 
     LazyColumn(
-        contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp)
+        contentPadding = PaddingValues(horizontal = 8.dp, vertical = 8.dp)
     ) {
         this.items(items = data, itemContent = { item ->
-            ListItem(dataSource = item, onClickDetails)
+            ListItem(viewModel = viewModel, dataSource = item, onClickDetails)
         })
     }
 }
 
 @ExperimentalCoilApi
 @Composable
-private fun ListItem(dataSource: DataSource,
-             onClickDetails: (DataSource) -> Unit = {}) {
-
+private fun ListItem(viewModel: ViewModel,
+                     dataSource: DataSource,
+                     onClickDetails: (DataSource) -> Unit = {}
+) {
     Card(
         modifier = Modifier
             .padding(horizontal = 8.dp, vertical = 8.dp)
@@ -54,7 +59,10 @@ private fun ListItem(dataSource: DataSource,
         elevation = 2.dp,
         shape = RoundedCornerShape(corner = CornerSize(16.dp))
     ) {
-        Row {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+        ) {
             DataImage(dataSource)
 
             Column(
@@ -63,8 +71,19 @@ private fun ListItem(dataSource: DataSource,
                     .fillMaxWidth()
                     .align(Alignment.CenterVertically)
             ) {
-                Text(text = dataSource.name, style = MaterialTheme.typography.h6)
-                Text(text = dataSource.origin, style = MaterialTheme.typography.caption)
+                dataSource.name?.let {
+                    Text(text = it, style = MaterialTheme.typography.h6)
+                }
+                dataSource.origin?.let {
+                    Text(text = it, style = MaterialTheme.typography.caption)
+                }
+
+                Row(
+                    modifier = Modifier
+                        .align(Alignment.End)
+                ) {
+                    Like(viewModel, dataSource)
+                }
             }
         }
     }
@@ -74,7 +93,7 @@ private fun ListItem(dataSource: DataSource,
 @Composable
 private fun DataImage(dataSource: DataSource) {
     Image(
-        rememberImagePainter(data = dataSource.image.url),
+        rememberImagePainter(data = dataSource.image?.url),
         contentDescription = null,
         contentScale = ContentScale.Crop,
         modifier = Modifier
@@ -84,13 +103,24 @@ private fun DataImage(dataSource: DataSource) {
     )
 }
 
+@Composable
+fun Like(viewModel: ViewModel, dataSource: DataSource) {
+    Icon(
+        painter = painterResource(id = R.drawable.ic_baseline_like_grey_24),
+        contentDescription = null,
+        modifier = Modifier.clickable {
+            viewModel.insertDataSource(dataSource)
+        }
+    )
+}
+
 @ExperimentalCoilApi
 @Composable
 @Preview
 private fun ListItemPreview() {
     TheCatDemoTheme(darkTheme = false) {
         Scaffold {
-            ListItem(dataSource = fakeDataSource, onClickDetails = {})
+            ListItem(viewModel(), dataSource = fakeDataSource, onClickDetails = {})
         }
     }
 }
@@ -101,7 +131,7 @@ private fun ListItemPreview() {
 private fun ListItemPreviewDark() {
     TheCatDemoTheme(darkTheme = true) {
         Scaffold {
-            ListItem(dataSource = fakeDataSource, onClickDetails = {})
+            ListItem(viewModel(), dataSource = fakeDataSource, onClickDetails = {})
         }
     }
 }

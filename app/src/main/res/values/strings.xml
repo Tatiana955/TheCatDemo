@@ -5,4 +5,9 @@
     <string name="description">Description</string>
     <string name="temperament">Temperament</string>
     <string name="wikipedia_url">See wikipedia</string>
+
+    <string name="main_screen">MainScreen</string>
+    <string name="details_screen">DetailsScreen</string>
+    <string name="web_screen">WebScreen</string>
+    <string name="like_screen">LikeScreen</string>
 </resources>

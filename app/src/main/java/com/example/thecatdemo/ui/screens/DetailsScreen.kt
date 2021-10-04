@@ -25,7 +25,9 @@ import com.example.thecatdemo.viewmodel.ViewModel
 
 @ExperimentalCoilApi
 @Composable
-fun DetailsScreen(viewModel: ViewModel, onClickItem: (String) -> Unit = {}) {
+fun DetailsScreen(viewModel: ViewModel,
+                  onClickItem: (String) -> Unit = {}
+) {
     val item: DataSource? = viewModel.clickDataSource
     if (item != null) {
         DataDetail(item, onClickItem)
@@ -34,7 +36,9 @@ fun DetailsScreen(viewModel: ViewModel, onClickItem: (String) -> Unit = {}) {
 
 @ExperimentalCoilApi
 @Composable
-private fun DataDetail(dataSource: DataSource, onClickItem: (String) -> Unit = {}) {
+private fun DataDetail(dataSource: DataSource,
+                       onClickItem: (String) -> Unit = {}
+) {
     val scrollState = rememberScrollState()
     Column(
         modifier = Modifier
@@ -52,7 +56,7 @@ private fun DataDetail(dataSource: DataSource, onClickItem: (String) -> Unit = {
 @Composable
 private fun DataImageDetails(dataSource: DataSource) {
     Image(
-        rememberImagePainter(data = dataSource.image.url),
+        rememberImagePainter(data = dataSource.image?.url),
         contentDescription = null,
         contentScale = ContentScale.Crop,
         modifier = Modifier
@@ -62,34 +66,55 @@ private fun DataImageDetails(dataSource: DataSource) {
 }
 
 @Composable
-private fun ProfileContent(dataSource: DataSource, onClickItem: (String) -> Unit = {}) {
+private fun ProfileContent(dataSource: DataSource,
+                           onClickItem: (String) -> Unit = {}
+) {
     Column {
         Name(dataSource)
-        ProfileProperty(stringResource(R.string.origin), dataSource.origin)
-        ProfileProperty(stringResource(R.string.description), dataSource.description)
-        ProfileProperty(stringResource(R.string.temperament), dataSource.temperament)
-        ProfileProperty(stringResource(R.string.wikipedia_url), dataSource.wikipedia_url, onClickItem)
+        dataSource.origin?.let {
+            ProfileProperty(stringResource(R.string.origin), it)
+        }
+        dataSource.description?.let {
+            ProfileProperty(stringResource(R.string.description), it)
+        }
+        dataSource.temperament?.let {
+            ProfileProperty(stringResource(R.string.temperament), it)
+        }
+        dataSource.wikipedia_url?.let {
+            ProfileProperty(stringResource(R.string.wikipedia_url), it, onClickItem)
+        }
     }
 }
 
 @Composable
 private fun Name(dataSource: DataSource) {
-    Column(modifier = Modifier
-        .padding(start = 16.dp, end = 16.dp, bottom = 16.dp, top = 16.dp)) {
-        Text(
-            text = dataSource.name,
-            style = MaterialTheme.typography.h5,
-            fontWeight = FontWeight.Bold
-        )
+    Column(
+        modifier = Modifier
+            .padding(start = 16.dp, end = 16.dp, bottom = 16.dp, top = 16.dp)
+    ) {
+        dataSource.name?.let {
+            Text(
+                text = it,
+                style = MaterialTheme.typography.h5,
+                fontWeight = FontWeight.Bold
+            )
+        }
     }
 }
 
 @Composable
-private fun ProfileProperty(label: String, value: String,
-                            onClickItem: (String) -> Unit = {}) {
-    Column(modifier = Modifier
-        .padding(start = 16.dp, end = 16.dp, bottom = 16.dp)) {
-        Divider(modifier = Modifier.padding(bottom = 4.dp))
+private fun ProfileProperty(label: String,
+                            value: String,
+                            onClickItem: (String) -> Unit = {}
+) {
+    Column(
+        modifier = Modifier
+            .padding(start = 16.dp, end = 16.dp, bottom = 16.dp)
+    ) {
+        Divider(
+            modifier = Modifier
+                .padding(bottom = 4.dp)
+        )
         Text(
             text = label,
             modifier = Modifier.height(24.dp),
