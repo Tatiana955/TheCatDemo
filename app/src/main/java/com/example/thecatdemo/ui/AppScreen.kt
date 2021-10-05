@@ -13,9 +13,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import coil.annotation.ExperimentalCoilApi
 import com.example.thecatdemo.R
-import com.example.thecatdemo.ui.screens.DetailsScreen
-import com.example.thecatdemo.ui.screens.LikeScreen
-import com.example.thecatdemo.ui.screens.MainScreen
+import com.example.thecatdemo.ui.screens.*
 import com.example.thecatdemo.ui.screens.WebScreen
 import com.example.thecatdemo.ui.screens.components.BottomNavigationBar
 import com.example.thecatdemo.ui.screens.components.MyTopAppBar
@@ -79,7 +77,14 @@ fun AppNavHost(navController: NavHostController,
 
         composable(NavItem.Web.route) { WebScreen(viewModel) }
 
-        composable(NavItem.Like.route) { LikeScreen(viewModel) }
+        composable(NavItem.Like.route) {
+            LikeScreen(viewModel, zoomImage = {
+                navController.navigate(NavItem.Zoom.route)
+                viewModel.zoomImage = it
+            })
+        }
+
+        composable(NavItem.Zoom.route) { ZoomScreen(viewModel) }
     }
 }
 
@@ -88,4 +93,5 @@ sealed class NavItem(var route: String, var icon: Int?, var title: String) {
     object Like : NavItem("like", R.drawable.ic_baseline_like_grey_24, "DetailsScreen")
     object Details : NavItem("details", null, "WebScreen")
     object Web : NavItem("web", null, "LikeScreen")
+    object Zoom : NavItem("zoom", null, "ZoomScreen")
 }

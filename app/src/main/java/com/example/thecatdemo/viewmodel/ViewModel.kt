@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.thecatdemo.data.Repository
 import com.example.thecatdemo.data.source.DataSource
+import com.example.thecatdemo.data.source.Image
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -26,6 +27,7 @@ class ViewModel @Inject constructor(private val repository: Repository): ViewMod
     }
 
     var clickDataSource: DataSource? = null
+    var zoomImage: Image? = null
 
     fun getData() {
         scope.launch {

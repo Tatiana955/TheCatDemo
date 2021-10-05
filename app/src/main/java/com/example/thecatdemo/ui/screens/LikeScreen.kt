@@ -2,6 +2,7 @@ package com.example.thecatdemo.ui.screens
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.GridCells
 import androidx.compose.foundation.lazy.LazyVerticalGrid
@@ -19,6 +20,7 @@ import androidx.compose.ui.unit.dp
 import coil.annotation.ExperimentalCoilApi
 import coil.compose.rememberImagePainter
 import com.example.thecatdemo.data.source.DataSource
+import com.example.thecatdemo.data.source.Image
 import com.example.thecatdemo.data.source.fakeDataSource
 import com.example.thecatdemo.ui.theme.TheCatDemoTheme
 import com.example.thecatdemo.viewmodel.ViewModel
@@ -26,7 +28,9 @@ import com.example.thecatdemo.viewmodel.ViewModel
 @ExperimentalFoundationApi
 @ExperimentalCoilApi
 @Composable
-fun LikeScreen(viewModel: ViewModel) {
+fun LikeScreen(viewModel: ViewModel,
+               zoomImage: (Image) -> Unit = {}
+) {
     viewModel.getDataSource()
     val data by viewModel.dataSourceLocal.observeAsState(mutableListOf())
 
@@ -35,14 +39,16 @@ fun LikeScreen(viewModel: ViewModel) {
         contentPadding = PaddingValues(8.dp)
     ) {
         this.items(items = data, itemContent = { item ->
-            Image(dataSource = item)
+            LikeImage(dataSource = item, zoomImage = zoomImage)
         })
     }
 }
 
 @ExperimentalCoilApi
 @Composable
-private fun Image(dataSource: DataSource) {
+private fun LikeImage(dataSource: DataSource,
+                  zoomImage: (Image) -> Unit = {}
+) {
     Image(
         rememberImagePainter(data = dataSource.image?.url),
         contentDescription = null,
@@ -51,6 +57,9 @@ private fun Image(dataSource: DataSource) {
             .padding(8.dp)
             .size(84.dp)
             .clip(RoundedCornerShape(corner = CornerSize(8.dp)))
+            .clickable {
+                dataSource.image?.let { zoomImage(it) }
+            }
     )
 }
 
@@ -59,6 +68,6 @@ private fun Image(dataSource: DataSource) {
 @Preview
 private fun ListImagePreview() {
     TheCatDemoTheme {
-        Image(dataSource = fakeDataSource)
+        LikeImage(dataSource = fakeDataSource)
     }
 }
