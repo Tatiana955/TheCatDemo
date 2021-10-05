@@ -20,7 +20,7 @@ fun WebScreen(viewModel: ViewModel,
 }
 
 @Composable
-fun OpenWeb(url: String) {
+private fun OpenWeb(url: String) {
     AndroidView(factory = {
         WebView(it).apply {
             layoutParams = ViewGroup.LayoutParams(

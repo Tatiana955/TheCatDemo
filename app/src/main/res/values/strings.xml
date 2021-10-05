@@ -10,4 +10,8 @@
     <string name="details_screen">DetailsScreen</string>
     <string name="web_screen">WebScreen</string>
     <string name="like_screen">LikeScreen</string>
+
+    <string name="delete">Delete?</string>
+    <string name="cancel">Cancel</string>
+    <string name="ok">OK</string>
 </resources>

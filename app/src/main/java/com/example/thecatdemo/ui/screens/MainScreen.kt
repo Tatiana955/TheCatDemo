@@ -104,7 +104,7 @@ private fun DataImage(dataSource: DataSource) {
 }
 
 @Composable
-fun Like(viewModel: ViewModel, dataSource: DataSource) {
+private fun Like(viewModel: ViewModel, dataSource: DataSource) {
     Icon(
         painter = painterResource(id = R.drawable.ic_baseline_like_grey_24),
         contentDescription = null,

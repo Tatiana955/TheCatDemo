@@ -6,6 +6,7 @@ import androidx.activity.compose.setContent
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.lifecycle.ViewModelProvider
 import coil.annotation.ExperimentalCoilApi
 import com.example.thecatdemo.ui.theme.TheCatDemoTheme
@@ -17,6 +18,7 @@ import javax.inject.Inject
 @AndroidEntryPoint
 @ExperimentalCoilApi
 @ExperimentalFoundationApi
+@ExperimentalComposeUiApi
 class MainActivity : ComponentActivity() {
 
     @Inject

@@ -54,7 +54,7 @@ fun BottomNavigationBar(navController: NavController) {
 @ExperimentalFoundationApi
 @Preview(showBackground = true)
 @Composable
-fun BottomNavigationBarPreview() {
+private fun BottomNavigationBarPreview() {
     TheCatDemoTheme() {
         BottomNavigationBar(navController = rememberNavController())
     }
@@ -64,7 +64,7 @@ fun BottomNavigationBarPreview() {
 @ExperimentalFoundationApi
 @Preview(showBackground = true)
 @Composable
-fun BottomNavigationBarPreviewDark() {
+private fun BottomNavigationBarPreviewDark() {
     TheCatDemoTheme(darkTheme = true) {
         BottomNavigationBar(navController = rememberNavController())
     }

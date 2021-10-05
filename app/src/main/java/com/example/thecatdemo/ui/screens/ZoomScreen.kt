@@ -27,7 +27,7 @@ fun ZoomScreen(viewModel: ViewModel) {
 
 @ExperimentalCoilApi
 @Composable
-fun ZoomImage(image: Image) {
+private fun ZoomImage(image: Image) {
     var scale by remember { mutableStateOf(1f) }
     var offsetX by remember { mutableStateOf(0f) }
     var offsetY by remember { mutableStateOf(0f) }
@@ -67,6 +67,6 @@ fun ZoomImage(image: Image) {
 @ExperimentalCoilApi
 @Composable
 @Preview
-fun ZoomableComposablePreview() {
+private fun ZoomableComposablePreview() {
     fakeDataSource.image?.let { ZoomImage(image = it) }
 }

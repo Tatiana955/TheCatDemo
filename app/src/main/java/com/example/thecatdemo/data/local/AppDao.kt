@@ -18,6 +18,9 @@ interface AppDao {
     @Delete
     suspend fun deleteDataSource(dataSource: DataSource)
 
+    @Query("DELETE from data WHERE primaryKey IN (:primaryKey)")
+    suspend fun deleteByPrimaryKey(primaryKey: Int)
+
     @Query("DELETE FROM data")
     suspend fun clearDataSource()
 }

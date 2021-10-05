@@ -17,9 +17,8 @@ import com.example.thecatdemo.ui.theme.TheCatDemoTheme
 
 @Composable
 fun MyTopAppBar(
-    title: @Composable RowScope.() -> Unit,
+    title: @Composable RowScope.() -> Unit
 ) {
-
     Column() {
         TopAppBar(
             elevation = 0.dp,
@@ -39,7 +38,7 @@ fun MyTopAppBar(
 
 @Preview
 @Composable
-fun MyTopAppBarPreview() {
+private fun MyTopAppBarPreview() {
     TheCatDemoTheme() {
         Surface {
             MyTopAppBar(title = { Text("Предварительный просмотр") })
@@ -49,7 +48,7 @@ fun MyTopAppBarPreview() {
 
 @Preview
 @Composable
-fun MyTopAppBarPreviewDark() {
+private fun MyTopAppBarPreviewDark() {
     TheCatDemoTheme(darkTheme = true) {
         Surface {
         MyTopAppBar(title = { Text("Предварительный просмотр") })

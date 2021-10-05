@@ -25,6 +25,10 @@ class LocalModel @Inject constructor(@ApplicationContext context: Context) {
         database.appDao().deleteDataSource(dataSource)
     }
 
+    suspend fun deleteByPrimaryKey(primaryKey: Int) {
+        database.appDao().deleteByPrimaryKey(primaryKey)
+    }
+
     suspend fun clearDataSource() {
         database.appDao().clearDataSource()
     }

@@ -24,6 +24,10 @@ class Repository @Inject constructor(private val remoteModel: RemoteModel,
         localModel.deleteDataSource(dataSource)
     }
 
+    suspend fun deleteByPrimaryKey(primaryKey: Int) {
+        localModel.deleteByPrimaryKey(primaryKey)
+    }
+
     suspend fun clearDataSource() {
         localModel.clearDataSource()
     }

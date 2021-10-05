@@ -46,12 +46,19 @@ class ViewModel @Inject constructor(private val repository: Repository): ViewMod
     fun insertDataSource(dataSource: DataSource) {
         scope.launch {
             repository.insertDataSource(dataSource)
+            dataSourceLocal.value?.add(dataSource)
         }
     }
 
     fun deleteDataSource(dataSource: DataSource) {
         scope.launch {
             repository.deleteDataSource(dataSource)
+        }
+    }
+
+    fun deleteByPrimaryKey(id: Int) {
+        scope.launch {
+            repository.deleteByPrimaryKey(id)
         }
     }
 
