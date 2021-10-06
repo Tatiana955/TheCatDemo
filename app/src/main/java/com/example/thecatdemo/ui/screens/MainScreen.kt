@@ -24,6 +24,7 @@ import coil.compose.rememberImagePainter
 import com.example.thecatdemo.R
 import com.example.thecatdemo.data.source.DataSource
 import com.example.thecatdemo.data.source.fakeDataSource
+import com.example.thecatdemo.ui.screens.components.AppCircularProgressIndicator
 import com.example.thecatdemo.ui.theme.TheCatDemoTheme
 import com.example.thecatdemo.viewmodel.ViewModel
 
@@ -33,12 +34,36 @@ fun MainScreen(viewModel: ViewModel,
                onClickDetails: (DataSource) -> Unit = {}
 ) {
     val data by viewModel.dataSource.observeAsState(mutableListOf())
+    Box(contentAlignment = Alignment.Center) {
+        when (data.isEmpty()) {
+            true -> {
+                AppCircularProgressIndicator()
+            }
+            false -> {
+                LazyColumnFun(
+                    viewModel = viewModel,
+                    onClickDetails = onClickDetails,
+                    data = data
+                )
+            }
+        }
+    }
+}
 
+@ExperimentalCoilApi
+@Composable
+private fun LazyColumnFun(viewModel: ViewModel,
+                          onClickDetails: (DataSource) -> Unit = {},
+                          data: MutableList<DataSource>
+) {
     LazyColumn(
         contentPadding = PaddingValues(horizontal = 8.dp, vertical = 8.dp)
     ) {
         this.items(items = data, itemContent = { item ->
-            ListItem(viewModel = viewModel, dataSource = item, onClickDetails)
+            ListItem(
+                viewModel = viewModel,
+                dataSource = item,
+                onClickDetails = onClickDetails)
         })
     }
 }
