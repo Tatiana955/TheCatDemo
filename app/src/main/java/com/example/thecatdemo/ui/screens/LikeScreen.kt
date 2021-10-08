@@ -4,13 +4,15 @@ import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.GridCells
-import androidx.compose.foundation.lazy.LazyVerticalGrid
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.*
 import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
+import androidx.compose.material.FloatingActionButton
+import androidx.compose.material.Icon
+import androidx.compose.material.Scaffold
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Clear
+import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -31,11 +33,33 @@ import com.example.thecatdemo.viewmodel.ViewModel
 @Composable
 fun LikeScreen(viewModel: ViewModel,
                zoomImage: (Image) -> Unit = {},
-               onLongClick: (DataSource) -> Unit = {}
+               onLongClick: (DataSource) -> Unit = {},
+               onClearClick: () -> Unit = {}
 ) {
     viewModel.getDataSource()
     val data by viewModel.dataSourceLocal.observeAsState(mutableListOf())
 
+    Scaffold(
+        floatingActionButton = {
+            ClearFloatingActionButton(
+                onClearClick = onClearClick
+            )
+        }
+    ) {
+        LazyColumnFun(
+            zoomImage = zoomImage,
+            onLongClick = onLongClick,
+            data = data
+        )
+    }
+}
+
+@ExperimentalFoundationApi
+@ExperimentalCoilApi
+@Composable
+private fun LazyColumnFun(zoomImage: (Image) -> Unit = {},
+                          onLongClick: (DataSource) -> Unit = {},
+                          data: MutableList<DataSource>) {
     LazyVerticalGrid(
         cells = GridCells.Fixed(3),
         contentPadding = PaddingValues(8.dp)
@@ -77,11 +101,45 @@ private fun LikeImage(dataSource: DataSource,
     )
 }
 
+@Composable
+private fun ClearFloatingActionButton(onClearClick: () -> Unit = {}) {
+    FloatingActionButton(
+        onClick = onClearClick
+    ) {
+        Row(
+            modifier = Modifier.padding(horizontal = 16.dp)
+        ) {
+            Icon(
+                imageVector = Icons.Default.Clear,
+                contentDescription = ""
+            )
+        }
+    }
+}
+
 @ExperimentalCoilApi
 @Composable
 @Preview
 private fun ListImagePreview() {
     TheCatDemoTheme {
         LikeImage(dataSource = fakeDataSource)
+    }
+}
+
+@ExperimentalCoilApi
+@Composable
+@Preview
+private fun ClearFloatingActionButtonPreview() {
+    TheCatDemoTheme {
+        ClearFloatingActionButton(onClearClick = {})
+    }
+}
+
+@ExperimentalCoilApi
+@Composable
+@Preview
+private fun ClearFloatingActionButtonPreviewDark() {
+    TheCatDemoTheme(darkTheme = true) {
+        ClearFloatingActionButton(onClearClick = {})
     }
 }

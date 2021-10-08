@@ -51,6 +51,10 @@ fun AppNavHost(navController: NavHostController,
                 onLongClick = {
                     navController.navigate(NavItem.DialogDelete.route)
                     viewModel.clickDataSource = it
+                },
+                onClearClick = {
+                    viewModel.clearDataSource()
+                    navController.popBackStack()
                 }
             )
         }
