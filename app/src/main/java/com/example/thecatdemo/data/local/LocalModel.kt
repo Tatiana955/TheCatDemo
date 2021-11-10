@@ -1,35 +1,26 @@
 package com.example.thecatdemo.data.local
 
-import android.content.Context
-import androidx.room.Room
 import com.example.thecatdemo.data.source.DataSource
-import dagger.hilt.android.qualifiers.ApplicationContext
-import javax.inject.Inject
 
-class LocalModel @Inject constructor(@ApplicationContext context: Context) {
-
-    private val database: AppDatabase = Room.databaseBuilder(
-        context,
-        AppDatabase::class.java, "data"
-    ).build()
+class LocalModel internal constructor(private val appDao: AppDao) {
 
     suspend fun getDataSource(): MutableList<DataSource> {
-        return database.appDao().getDataSource()
+        return appDao.getDataSource()
     }
 
     suspend fun insertDataSource(dataSource: DataSource) {
-        database.appDao().insertDataSource(dataSource)
+        appDao.insertDataSource(dataSource)
     }
 
     suspend fun deleteDataSource(dataSource: DataSource) {
-        database.appDao().deleteDataSource(dataSource)
+        appDao.deleteDataSource(dataSource)
     }
 
     suspend fun deleteByPrimaryKey(primaryKey: Int) {
-        database.appDao().deleteByPrimaryKey(primaryKey)
+        appDao.deleteByPrimaryKey(primaryKey)
     }
 
     suspend fun clearDataSource() {
-        database.appDao().clearDataSource()
+        appDao.clearDataSource()
     }
 }

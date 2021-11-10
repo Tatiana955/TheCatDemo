@@ -6,14 +6,11 @@ import androidx.lifecycle.ViewModel
 import com.example.thecatdemo.data.Repository
 import com.example.thecatdemo.data.source.DataSource
 import com.example.thecatdemo.data.source.Image
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
-@HiltViewModel
-class ViewModel @Inject constructor(private val repository: Repository): ViewModel(),
+class ViewModel (private val repository: Repository): ViewModel(),
     LifecycleObserver {
 
     private val scope = CoroutineScope(Dispatchers.IO)
