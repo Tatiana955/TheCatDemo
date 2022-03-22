@@ -9,14 +9,14 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.example.thecatdemo.ui.theme.TheCatDemoTheme
 
 @Composable
-fun AppCircularProgressIndicator() {
-    SimpleCircularProgressIndicator()
+fun AppCircularProgressIndicator(modifier: Modifier = Modifier) {
+    SimpleCircularProgressIndicator(modifier = modifier)
 }
 
 @Composable
-private fun SimpleCircularProgressIndicator() {
+private fun SimpleCircularProgressIndicator(modifier: Modifier) {
     Column(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxSize(),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
@@ -30,7 +30,7 @@ private fun SimpleCircularProgressIndicator() {
 private fun FeaturedCircularProgressIndicatorPreview(){
     TheCatDemoTheme() {
         Surface() {
-            AppCircularProgressIndicator()
+            AppCircularProgressIndicator(modifier = Modifier)
         }
     }
 }
@@ -40,7 +40,7 @@ private fun FeaturedCircularProgressIndicatorPreview(){
 private fun FeaturedCircularProgressIndicatorPreviewDark(){
     TheCatDemoTheme(darkTheme = true) {
         Surface() {
-            AppCircularProgressIndicator()
+            AppCircularProgressIndicator(modifier = Modifier)
         }
     }
 }

@@ -1,14 +1,13 @@
 package com.example.thecatdemo.ui.screens.components
 
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.material.BottomNavigation
-import androidx.compose.material.BottomNavigationItem
-import androidx.compose.material.Icon
-import androidx.compose.runtime.Composable
+import androidx.compose.material.*
+import androidx.compose.runtime.*
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavController
+import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import coil.annotation.ExperimentalCoilApi
 import com.example.thecatdemo.ui.NavItem
@@ -22,11 +21,12 @@ fun BottomNavigationBar(navController: NavController) {
         NavItem.Main,
         NavItem.Like
     )
-
+    val backStackEntry = navController.currentBackStackEntryAsState()
     BottomNavigation(
         contentColor = Color.White
     ) {
         items.forEach { item ->
+            val selected = item.route == backStackEntry.value?.destination?.route
             BottomNavigationItem(
                 icon = {
                     item.icon?.let {
@@ -36,9 +36,9 @@ fun BottomNavigationBar(navController: NavController) {
                         )
                     }
                 },
-                selectedContentColor = Color.Black,
+                selectedContentColor = Color.Red,
                 unselectedContentColor = Color.White,
-                selected = false,
+                selected = selected,
                 onClick = {
                     navController.navigate(item.route) {
                         launchSingleTop = true
