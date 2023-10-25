@@ -9,8 +9,9 @@ import com.example.thecatdemo.data.source.DataSource
 import com.example.thecatdemo.viewmodel.ViewModel
 
 @Composable
-fun WebScreen(viewModel: ViewModel,
-              onClickItem: (String) -> Unit = {}
+fun WebScreen(
+    viewModel: ViewModel,
+    onClickItem: (String) -> Unit = {}
 ) {
     val item: DataSource? = viewModel.clickDataSource
     if (item != null) {

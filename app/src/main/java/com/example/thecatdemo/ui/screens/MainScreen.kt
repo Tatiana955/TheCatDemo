@@ -1,7 +1,6 @@
 package com.example.thecatdemo.ui.screens
 
 import androidx.compose.animation.animateColorAsState
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -16,23 +15,22 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.annotation.ExperimentalCoilApi
-import coil.compose.rememberImagePainter
+import coil.compose.AsyncImage
+import coil.request.ImageRequest
 import com.example.thecatdemo.R
 import com.example.thecatdemo.data.source.DataSource
-import com.example.thecatdemo.data.source.fakeDataSource
 import com.example.thecatdemo.ui.screens.components.AppCircularProgressIndicator
-import com.example.thecatdemo.ui.theme.TheCatDemoTheme
 import com.example.thecatdemo.viewmodel.ViewModel
 
 @ExperimentalCoilApi
 @Composable
-fun MainScreen(viewModel: ViewModel,
-               onClickDetails: (DataSource) -> Unit = {}
+fun MainScreen(
+    viewModel: ViewModel,
+    onClickDetails: (DataSource) -> Unit = {}
 ) {
     val data by viewModel.dataSource.observeAsState(mutableListOf())
     Box(contentAlignment = Alignment.Center) {
@@ -40,6 +38,7 @@ fun MainScreen(viewModel: ViewModel,
             true -> {
                 AppCircularProgressIndicator()
             }
+
             false -> {
                 LazyColumnFun(
                     viewModel = viewModel,
@@ -53,9 +52,10 @@ fun MainScreen(viewModel: ViewModel,
 
 @ExperimentalCoilApi
 @Composable
-private fun LazyColumnFun(viewModel: ViewModel,
-                          onClickDetails: (DataSource) -> Unit = {},
-                          data: MutableList<DataSource>
+private fun LazyColumnFun(
+    viewModel: ViewModel,
+    onClickDetails: (DataSource) -> Unit = {},
+    data: MutableList<DataSource>
 ) {
     LazyColumn(
         contentPadding = PaddingValues(horizontal = 8.dp, vertical = 8.dp)
@@ -64,16 +64,18 @@ private fun LazyColumnFun(viewModel: ViewModel,
             ListItem(
                 viewModel = viewModel,
                 dataSource = item,
-                onClickDetails = onClickDetails)
+                onClickDetails = onClickDetails
+            )
         })
     }
 }
 
 @ExperimentalCoilApi
 @Composable
-private fun ListItem(viewModel: ViewModel,
-                     dataSource: DataSource,
-                     onClickDetails: (DataSource) -> Unit = {}
+private fun ListItem(
+    viewModel: ViewModel,
+    dataSource: DataSource,
+    onClickDetails: (DataSource) -> Unit = {}
 ) {
     Card(
         modifier = Modifier
@@ -126,9 +128,14 @@ private fun ListItem(viewModel: ViewModel,
 @ExperimentalCoilApi
 @Composable
 private fun DataImage(dataSource: DataSource) {
-    Image(
-        rememberImagePainter(data = dataSource.image?.url),
-        contentDescription = null,
+    AsyncImage(
+        model = ImageRequest.Builder(LocalContext.current)
+            .data(dataSource.image?.url)
+            .crossfade(true)
+            .build(),
+        placeholder = painterResource(R.drawable.baseline_image_24),
+        error = painterResource(R.drawable.baseline_image_24),
+        contentDescription = "",
         contentScale = ContentScale.Crop,
         modifier = Modifier
             .padding(8.dp)
@@ -168,26 +175,4 @@ private fun Like(viewModel: ViewModel, dataSource: DataSource) {
 
 enum class LikeState {
     NotLike, Like
-}
-
-@ExperimentalCoilApi
-@Composable
-@Preview
-private fun ListItemPreview() {
-    TheCatDemoTheme(darkTheme = false) {
-        Scaffold {
-            ListItem(viewModel(), dataSource = fakeDataSource, onClickDetails = {})
-        }
-    }
-}
-
-@ExperimentalCoilApi
-@Preview
-@Composable
-private fun ListItemPreviewDark() {
-    TheCatDemoTheme(darkTheme = true) {
-        Scaffold {
-            ListItem(viewModel(), dataSource = fakeDataSource, onClickDetails = {})
-        }
-    }
 }

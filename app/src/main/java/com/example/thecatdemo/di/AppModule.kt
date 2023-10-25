@@ -57,7 +57,8 @@ object AppModule {
 
     @Singleton
     @Provides
-    fun provideLocal(database: AppDatabase
+    fun provideLocal(
+        database: AppDatabase
     ): LocalModel {
         return LocalModel(database.appDao())
     }

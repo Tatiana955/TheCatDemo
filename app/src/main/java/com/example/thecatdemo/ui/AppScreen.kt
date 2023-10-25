@@ -4,7 +4,6 @@ import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
-import androidx.compose.material.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
@@ -22,12 +21,11 @@ fun AppScreen(viewModel: ViewModel) {
     val navController = rememberNavController()
     Scaffold(
         topBar = {
-            TopAppBar() {
-                MyTopAppBar(
-                    title = {
-                        Text(text = "MainScreen") }
-                )
-            }
+            MyTopAppBar(
+                title = {
+                    Text(text = "The cats")
+                }
+            )
         },
         content = { innerPadding ->
             AppNavHost(

@@ -15,10 +15,10 @@ import com.example.thecatdemo.viewmodel.ViewModelFactory
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
-@AndroidEntryPoint
 @ExperimentalCoilApi
 @ExperimentalFoundationApi
 @ExperimentalComposeUiApi
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
     @Inject
@@ -28,12 +28,10 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
 
-            val viewModel = ViewModelProvider(this, factory)
-                .get(ViewModel::class.java)
+            val viewModel = ViewModelProvider(this, factory)[ViewModel::class.java]
             viewModel.getData()
 
             TheCatDemoTheme {
-                // A surface container using the 'background' color from the theme
                 Surface(color = MaterialTheme.colors.background) {
                     AppScreen(viewModel = viewModel)
                 }

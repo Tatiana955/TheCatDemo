@@ -1,6 +1,5 @@
 package com.example.thecatdemo.ui.screens
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -11,13 +10,16 @@ import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import coil.annotation.ExperimentalCoilApi
-import coil.compose.rememberImagePainter
+import coil.compose.AsyncImage
+import coil.request.ImageRequest
 import com.example.thecatdemo.R
 import com.example.thecatdemo.data.source.Image
 import com.example.thecatdemo.viewmodel.ViewModel
@@ -25,28 +27,29 @@ import com.example.thecatdemo.viewmodel.ViewModel
 @ExperimentalCoilApi
 @ExperimentalComposeUiApi
 @Composable
-fun DialogDeleteScreen(viewModel: ViewModel,
-                       onDismiss: () -> Unit = {},
-                       onNegativeClick: () -> Unit = {},
-                       onPositiveClick: () -> Unit = {}
+fun DialogDeleteScreen(
+    viewModel: ViewModel,
+    onDismiss: () -> Unit = {},
+    onNegativeClick: () -> Unit = {},
+    onPositiveClick: () -> Unit = {}
 ) {
-    viewModel.clickDataSource?.image?.let {
-        DialogShow(
+    val image = viewModel.clickDataSource?.image
+    DialogShow(
         onDismiss = onDismiss,
         onNegativeClick = onNegativeClick,
         onPositiveClick = onPositiveClick,
-        image = it
+        image = image
     )
-    }
 }
 
 @ExperimentalCoilApi
 @ExperimentalComposeUiApi
 @Composable
-private fun DialogShow(onDismiss: () -> Unit = {},
-                       onNegativeClick: () -> Unit = {},
-                       onPositiveClick: () -> Unit = {},
-                       image: Image
+private fun DialogShow(
+    onDismiss: () -> Unit = {},
+    onNegativeClick: () -> Unit = {},
+    onPositiveClick: () -> Unit = {},
+    image: Image?
 ) {
     Dialog(
         onDismissRequest = onDismiss
@@ -90,10 +93,15 @@ private fun DialogShow(onDismiss: () -> Unit = {},
 
 @ExperimentalCoilApi
 @Composable
-private fun DialogImage(image: Image) {
-    Image(
-        rememberImagePainter(data = image.url),
-        contentDescription = null,
+private fun DialogImage(image: Image?) {
+    AsyncImage(
+        model = ImageRequest.Builder(LocalContext.current)
+            .data(image?.url)
+            .crossfade(true)
+            .build(),
+        placeholder = painterResource(R.drawable.baseline_image_24),
+        error = painterResource(R.drawable.baseline_image_24),
+        contentDescription = "",
         contentScale = ContentScale.Crop,
         modifier = Modifier
             .padding(8.dp)

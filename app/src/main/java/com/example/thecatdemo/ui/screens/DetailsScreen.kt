@@ -1,6 +1,5 @@
 package com.example.thecatdemo.ui.screens
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
@@ -10,23 +9,24 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.annotation.ExperimentalCoilApi
-import coil.compose.rememberImagePainter
+import coil.compose.AsyncImage
+import coil.request.ImageRequest
 import com.example.thecatdemo.R
 import com.example.thecatdemo.data.source.DataSource
-import com.example.thecatdemo.data.source.fakeDataSource
-import com.example.thecatdemo.ui.theme.TheCatDemoTheme
 import com.example.thecatdemo.viewmodel.ViewModel
 
 @ExperimentalCoilApi
 @Composable
-fun DetailsScreen(viewModel: ViewModel,
-                  onClickItem: (String) -> Unit = {}
+fun DetailsScreen(
+    viewModel: ViewModel,
+    onClickItem: (String) -> Unit = {}
 ) {
     val item: DataSource? = viewModel.clickDataSource
     if (item != null) {
@@ -36,8 +36,9 @@ fun DetailsScreen(viewModel: ViewModel,
 
 @ExperimentalCoilApi
 @Composable
-private fun DataDetail(dataSource: DataSource,
-                       onClickItem: (String) -> Unit = {}
+private fun DataDetail(
+    dataSource: DataSource,
+    onClickItem: (String) -> Unit = {}
 ) {
     val scrollState = rememberScrollState()
     Column(
@@ -55,9 +56,14 @@ private fun DataDetail(dataSource: DataSource,
 @ExperimentalCoilApi
 @Composable
 private fun DataImageDetails(dataSource: DataSource) {
-    Image(
-        rememberImagePainter(data = dataSource.image?.url),
-        contentDescription = null,
+    AsyncImage(
+        model = ImageRequest.Builder(LocalContext.current)
+            .data(dataSource.image?.url)
+            .crossfade(true)
+            .build(),
+        placeholder = painterResource(R.drawable.baseline_image_24),
+        error = painterResource(R.drawable.baseline_image_24),
+        contentDescription = "",
         contentScale = ContentScale.Crop,
         modifier = Modifier
             .padding(8.dp)
@@ -66,8 +72,9 @@ private fun DataImageDetails(dataSource: DataSource) {
 }
 
 @Composable
-private fun ProfileContent(dataSource: DataSource,
-                           onClickItem: (String) -> Unit = {}
+private fun ProfileContent(
+    dataSource: DataSource,
+    onClickItem: (String) -> Unit = {}
 ) {
     Column {
         Name(dataSource)
@@ -103,9 +110,10 @@ private fun Name(dataSource: DataSource) {
 }
 
 @Composable
-private fun ProfileProperty(label: String,
-                            value: String,
-                            onClickItem: (String) -> Unit = {}
+private fun ProfileProperty(
+    label: String,
+    value: String,
+    onClickItem: (String) -> Unit = {}
 ) {
     Column(
         modifier = Modifier
@@ -129,27 +137,5 @@ private fun ProfileProperty(label: String,
                     onClickItem(value)
                 }
         )
-    }
-}
-
-@ExperimentalCoilApi
-@Composable
-@Preview
-private fun DataDetailPreview() {
-    TheCatDemoTheme() {
-        Scaffold {
-            DataDetail(dataSource = fakeDataSource)
-        }
-    }
-}
-
-@ExperimentalCoilApi
-@Composable
-@Preview
-private fun DataDetailPreviewDark() {
-    TheCatDemoTheme(darkTheme = true) {
-        Scaffold {
-            DataDetail(dataSource = fakeDataSource)
-        }
     }
 }

@@ -3,7 +3,6 @@ package com.example.thecatdemo.ui.screens
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import com.example.thecatdemo.viewmodel.ViewModel
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.gestures.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.runtime.getValue
@@ -13,21 +12,25 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.pointer.pointerInput
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import coil.annotation.ExperimentalCoilApi
-import coil.compose.rememberImagePainter
+import coil.compose.AsyncImage
+import coil.request.ImageRequest
+import com.example.thecatdemo.R
 import com.example.thecatdemo.data.source.Image
-import com.example.thecatdemo.data.source.fakeDataSource
 
 @ExperimentalCoilApi
 @Composable
 fun ZoomScreen(viewModel: ViewModel) {
-    viewModel.zoomImage?.let { ZoomImage(it) }
+    val image = viewModel.zoomImage
+    ZoomImage(image)
 }
 
 @ExperimentalCoilApi
 @Composable
-private fun ZoomImage(image: Image) {
+private fun ZoomImage(image: Image?) {
     var scale by remember { mutableStateOf(1f) }
     var offsetX by remember { mutableStateOf(0f) }
     var offsetY by remember { mutableStateOf(0f) }
@@ -49,7 +52,15 @@ private fun ZoomImage(image: Image) {
                 }
             }
     ) {
-        Image(rememberImagePainter(data = image.url),
+        AsyncImage(
+            model = ImageRequest.Builder(LocalContext.current)
+                .data(image?.url)
+                .crossfade(true)
+                .build(),
+            placeholder = painterResource(R.drawable.baseline_image_24),
+            error = painterResource(R.drawable.baseline_image_24),
+            contentDescription = "",
+            contentScale = ContentScale.Crop,
             modifier = Modifier
                 .wrapContentWidth(Alignment.CenterHorizontally)
                 .wrapContentHeight(Alignment.CenterVertically)
@@ -58,15 +69,7 @@ private fun ZoomImage(image: Image) {
                     scaleY = scale,
                     translationX = offsetX,
                     translationY = offsetY
-                ),
-            contentDescription = ""
+                )
         )
     }
-}
-
-@ExperimentalCoilApi
-@Composable
-@Preview
-private fun ZoomableComposablePreview() {
-    fakeDataSource.image?.let { ZoomImage(image = it) }
 }

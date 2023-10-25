@@ -5,13 +5,10 @@ import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
-import androidx.navigation.compose.rememberNavController
 import coil.annotation.ExperimentalCoilApi
 import com.example.thecatdemo.ui.NavItem
-import com.example.thecatdemo.ui.theme.TheCatDemoTheme
 
 @ExperimentalCoilApi
 @ExperimentalFoundationApi
@@ -47,25 +44,5 @@ fun BottomNavigationBar(navController: NavController) {
                 }
             )
         }
-    }
-}
-
-@ExperimentalCoilApi
-@ExperimentalFoundationApi
-@Preview(showBackground = true)
-@Composable
-private fun BottomNavigationBarPreview() {
-    TheCatDemoTheme() {
-        BottomNavigationBar(navController = rememberNavController())
-    }
-}
-
-@ExperimentalCoilApi
-@ExperimentalFoundationApi
-@Preview(showBackground = true)
-@Composable
-private fun BottomNavigationBarPreviewDark() {
-    TheCatDemoTheme(darkTheme = true) {
-        BottomNavigationBar(navController = rememberNavController())
     }
 }
